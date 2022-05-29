@@ -1,0 +1,8 @@
+-cpu=rx600
+-lang=c
+-include="C:\WorkSpace\180degree\bldc","C:\WorkSpace\180degree\bldc\i_src"
+-output=obj="C:\WorkSpace\180degree\180degree\Debug\180degree.obj"
+-debug
+-optimize=0
+"C:\WorkSpace\180degree\180degree\180degree.c"
+-nologo

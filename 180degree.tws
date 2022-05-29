@@ -1,0 +1,23 @@
+[HIMDBVersion]
+2.0
+[DATABASE_VERSION]
+"1.2" 
+[CURRENT_PROJECT]
+"180degree" 
+[GENERAL_DATA]
+[BREAKPOINTS]
+[OPEN_WORKSPACE_FILES]
+"C:\WorkSpace\180degree\180degree\180degree.c" 
+"C:\WorkSpace\180degree\180degree\resetprg.c" 
+"C:\WorkSpace\180degree\bldc\IO\R_PG_IO_PORT_PA.c" 
+"C:\WorkSpace\180degree\bldc\MTU\R_PG_Timer_MTU_U0.c" 
+"C:\WorkSpace\180degree\bldc\MTU\R_PG_Timer_MTU_U0_C3.c" 
+[WORKSPACE_FILE_STATES]
+"C:\WorkSpace\180degree\180degree\180degree.c" 0 0 1164 331 0 0 
+"C:\WorkSpace\180degree\180degree\resetprg.c" -8 -31 1294 500 1 1 
+"C:\WorkSpace\180degree\bldc\IO\R_PG_IO_PORT_PA.c" 104 104 840 312 0 4 
+"C:\WorkSpace\180degree\bldc\MTU\R_PG_Timer_MTU_U0.c" 78 78 840 312 0 3 
+"C:\WorkSpace\180degree\bldc\MTU\R_PG_Timer_MTU_U0_C3.c" 52 52 886 312 0 2 
+[LOADED_PROJECTS]
+"180degree" 
+[END]

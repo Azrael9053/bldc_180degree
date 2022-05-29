@@ -1,0 +1,3 @@
+-cpu=rx600
+-output="C:\WorkSpace\180degree\180degree\Debug\180degree.lib"
+-head=runtime,stdio,stdlib,string,new
