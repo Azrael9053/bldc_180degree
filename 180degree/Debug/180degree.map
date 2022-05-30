@@ -1,4 +1,4 @@
-Optimizing Linkage Editor (V.10.00.00.001)        28-May-2022 20:54:03
+Optimizing Linkage Editor (V.10.00.00.001)        30-May-2022 20:40:50
 
 *** Options ***
 
@@ -46,11 +46,11 @@ R_2
 B
                                   0000103c  0000151b       4e0   4
 R
-                                  0000151c  00001587        6c   4
+                                  0000151c  0000158f        74   4
 SU
-                                  00001588  00001887       300   4
+                                  00001590  0000188f       300   4
 SI
-                                  00001888  00001987       100   4
+                                  00001890  0000198f       100   4
 PResetPRG
                                   ffff8000  ffff8045        46   1
 C_1
@@ -66,18 +66,18 @@ C$BSEC
 C$VECT
                                   ffff8164  ffff8563       400   4
 D
-                                  ffff8564  ffff85cf        6c   4
+                                  ffff8564  ffff85d7        74   4
 D_2
-                                  ffff85d0  ffff85f5        26   2
+                                  ffff85d8  ffff85fd        26   2
 D_1
-                                  ffff85f6  ffff85f6         0   1
+                                  ffff85fe  ffff85fe         0   1
 P
-                                  ffff85f6  ffffeeba      68c5   1
+                                  ffff85fe  fffff2f9      6cfc   1
 W_1
-                                  ffffeebb  ffffeebb         0   1
+                                  fffff2fa  fffff2fa         0   1
 W_2
-                                  ffffeebc  ffffeecf        14   2
+                                  fffff2fa  fffff30d        14   2
 W
-                                  ffffeed0  ffffeed0         0   4
+                                  fffff310  fffff310         0   4
 FIXEDVECT
                                   ffffffd0  ffffffff        30   4

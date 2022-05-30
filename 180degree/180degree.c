@@ -26,31 +26,21 @@ extern "C"
 }
 #endif
 
-// typedef union
-// {
-//     uint8_t b;
-//     struct
-//     {
-//         unsigned h1 : 1;
-//         unsigned h2 : 1;
-//         unsigned h3 : 1;
-//     };
-// } test;
-// test t;
-
-
+#define start_time 350
 
 bool temp;
 
-int count = 0, state = 0, step = 0, time = 500, init_step[6] = {1, 3, 2, 5, 0, 4}, init_flag = 0, step_count = 0, frflag = 1;
+int test = 0;
+
+int count = 0, state = 0, step = 0, time = 500, init_step[6] = {1, 3, 2, 5, 0, 4}, init_flag = 0, step_count = 0, frflag = 1, step_flag = 0;
 
 uint8_t hall, h;
 
-unsigned short duty = 800;
+uint16_t duty = 800;
 
-unsigned short duty_U[6] = {800, 800, 800, 1632, 1632, 1632},
-               duty_V[6] = {1632, 1632, 800, 800, 800, 1632},
-               duty_W[6] = {800, 1632, 1632, 1632, 800, 800};
+uint16_t duty_U[6] = {800, 800, 800, 1632, 1632, 1632},
+        duty_V[6] = {1632, 1632, 800, 800, 800, 1632},
+        duty_W[6] = {800, 1632, 1632, 1632, 800, 800};
 
 void initmotor(void)
 {
@@ -60,14 +50,76 @@ void initmotor(void)
     R_PG_Timer_Start_CMT_U0_C0();
 }
 
-void forward(int target_time, int target_step)
+void forward(int tar_time, int tar_step, int a_step)
 {
+    int tps = (start_time - tar_time) / (double)a_step + 0.999;
+    int b_step = tar_step -  (start_time - tar_time) / tps;
+    a_step = (start_time - tar_time) / tps;
     step_count = 0;
     frflag = 1;
     initmotor();
     while(!init_flag);
+	time = start_time;
     state = 2;
-    // for(step_count = 0; step_count < target_step; step_count++)
+    while (step_count < tar_step)
+    {
+        if(step_flag)
+        {
+            step_flag = 0;
+			count = (count < time) * count;
+            step += (count >= (time - 1)) * frflag;         //frflag: forward = 1, reverse = -1
+            step_count += (count >= (time - 1));
+            step = (step <= 5) * (step >= 0) * step + (step < 0) * 5;        //step in 0 ~ 5
+            if((step_count <= a_step) && (step_count < b_step) && (time > tar_time))
+            {
+                time -= (count >= (time - 1)) * tps;
+            }
+            else if(step_count >= b_step && (count >= (time - 1)))
+            {
+                time += tps;
+				count += tps;
+            }
+            
+        }
+    }
+	initmotor();
+	while(!init_flag);
+}
+
+void reverse(int tar_time, int tar_step, int a_step)
+{
+    int tps = (start_time - tar_time) / (double)a_step + 0.999;
+    int b_step = tar_step -  (start_time - tar_time) / tps;
+    a_step = (start_time - tar_time) / tps;
+    step_count = 0;
+    frflag = -1;
+    initmotor();
+    while(!init_flag);
+	time = start_time;
+    state = 2;
+    while (step_count < tar_step)
+    {
+        if(step_flag)
+        {
+            step_flag = 0;
+			count = (count < time) * count;
+            step += (count >= (time - 1)) * frflag;         //frflag: forward = 1, reverse = -1
+            step_count += (count >= (time - 1));
+            step = (step <= 5) * (step >= 0) * step + (step < 0) * 5;        //step in 0 ~ 5
+            if((step_count <= a_step) && (step_count < b_step) && (time > tar_time))
+            {
+                time -= (count >= (time - 1)) * tps;
+            }
+            else if(step_count >= b_step && (count >= (time - 1)))
+            {
+                time += tps;
+				count += tps;
+            }
+            
+        }
+    }
+	initmotor();
+	while(!init_flag);
 }
 
 void main(void)
@@ -81,6 +133,17 @@ void main(void)
     {
         R_PG_IO_PORT_Read_PA(&h);
         hall = ((h >> 2) & 0x07) - 1;
+
+        if(test == 1)
+        {
+            test = 0;
+            forward(100, 1000, 250);
+        }
+		else if(test == 2)
+		{
+			test = 0;
+            reverse(100, 1000, 250);
+		}
     }
 }
 
@@ -88,11 +151,8 @@ void Mtu4IntFunc_V(void)
 {
     R_PG_Timer_GetRequestFlag_MTU_U0_C3(0, 0, 0, 0, 0, 0, 0, 0);
     R_PG_Timer_GetRequestFlag_MTU_U0_C4(0, 0, 0, 0, 0, 0, 0, 0);
-
-    count = (count < time) * count;
-    step += (count >= (time - 1)) * frflag;         //frflag: forward = 1, reverse = -1
-    step_count += (count >= (time - 1));
-    step = (step <= 5) * (step >= 0) * step + (step < 0) * 5;        //step in 0 ~ 5
+	
+	
 
     if (state == 1)
     {
@@ -104,6 +164,7 @@ void Mtu4IntFunc_V(void)
     else if (state == 2)
     {
         count++;
+        step_flag = 1;
         R_PG_Timer_SetTGR_D_MTU_U0_C3(duty_U[step]);
         R_PG_Timer_SetTGR_C_MTU_U0_C4(duty_V[step]);
         R_PG_Timer_SetTGR_D_MTU_U0_C4(duty_W[step]);
